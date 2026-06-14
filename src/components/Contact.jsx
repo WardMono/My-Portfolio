@@ -8,7 +8,7 @@ const contactData = [
         Icon: SiGmail,
         label: 'Email',
         value: 'Deleonalfredmiguel@gmail.com',
-        href: 'mailto:Deleonalfredmiguel@gmail.com?subject=Hello Alfred — Let\'s Connect',
+        href: 'https://mail.google.com/mail/?view=cm&to=Deleonalfredmiguel@gmail.com&su=Reaching%20Out%20%E2%80%94%20Let%27s%20Connect&body=Hi%20Alfred%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20wanted%20to%20reach%20out.%0A%0A',
         brandColor: '#EA4335',
         target: '_self',
     },
