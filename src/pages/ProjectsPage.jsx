@@ -250,6 +250,7 @@ function ProjectsPage() {
     const handlePageChange = (newPage) => {
         if (paging || newPage === currentPage) return
         setPaging(true)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         setTimeout(() => {
             setCurrentPage(newPage)
             setPaging(false)
@@ -259,6 +260,7 @@ function ProjectsPage() {
     const handleFilter = (tag) => {
         if (paging) return
         setPaging(true)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         setTimeout(() => {
             setActiveFilter(tag)
             setCurrentPage(1)
