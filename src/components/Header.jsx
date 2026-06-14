@@ -237,7 +237,7 @@ function Header({ animReady }) {
 
                     <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
                         <a
-                            href="https://mail.google.com/mail/?view=cm&to=Deleonalfredmiguel@gmail.com&su=Hello%20Alfred&body=Hi%20Alfred%2C%0A%0A"
+                            href="https://mail.google.com/mail/?view=cm&to=Deleonalfredmiguel@gmail.com&su=Reaching%20Out%20%E2%80%94%20Let%27s%20Connect&body=Hi%20Alfred%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20wanted%20to%20reach%20out.%0A%0A"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
