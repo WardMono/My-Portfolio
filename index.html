@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── Fonts ──────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- ── Tab title ─────────────────────────────────── -->
+  <title>Alfred Miguel De Leon | Web Developer</title>
+
+  <!-- ── SEO & meta ────────────────────────────────── -->
+  <meta name="description"
+    content="Portfolio of Alfred Miguel De Leon — BS IT student and web developer from Pasay City, Philippines. Building with React, Node.js, and PostgreSQL." />
+  <meta name="author" content="Alfred Miguel De Leon" />
+
+  <!-- ── OG tags ───────────────────────────────────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Alfred Miguel De Leon | Web Developer" />
+  <meta property="og:description"
+    content="Portfolio of Alfred Miguel De Leon — BS IT student and web developer from Pasay City, Philippines." />
+  <meta property="og:image" content="/src/assets/Profile.jpg" />
+  <meta property="og:url" content="https://wardmono.vercel.app" />
+
+  <!-- ── Theme color for mobile browser chrome ─────── -->
+  <meta name="theme-color" content="#0f0e0c" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f5f0e8" media="(prefers-color-scheme: light)" />
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem('portfolio-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

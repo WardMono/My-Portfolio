@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SamsungSharpSans';
+  src: url('./fonts/samsungsharpsans.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SamsungSharpSans';
+  src: url('./fonts/samsungsharpsans-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SamsungSharpSans';
+  src: url('./fonts/samsungsharpsans-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ── Design tokens — Light ──────────────── */
+:root {
+  --bg:                #ffffff;
+  --ink:               #1A1A1A;
+  --ink-light:         #3a3a3a;
+  --ink-muted:         #6b6b6b;
+  --ink-faint:         #9a9a9a;
+  --card-bg:           #FFFFFF;
+  --card-border:       rgba(26,26,26,0.10);
+  --card-border-hover: rgba(26,26,26,0.18);
+  --card-border-focus: rgba(26,26,26,0.28);
+  --tag-bg:            rgba(26,26,26,0.07);
+  --tag-hover:         rgba(26,26,26,0.13);
+  --msg-bg:            rgba(26,26,26,0.05);
+  --input-bg:          rgba(26,26,26,0.04);
+  --btn-disabled-bg:   rgba(26,26,26,0.06);
+  --radius:            16px;
+  --radius-sm:         10px;
+  --card-hover-bg:     rgba(26,26,26,0.025);
+  --border-active:     rgba(26,26,26,0.35);
+}
+
+/* ── Design tokens — Dark ──────────────────────────── */
+html[data-theme="dark"] {
+  --bg:                #111111;
+  --ink:               #EFEFEF;
+  --ink-light:         #CCCCCC;
+  --ink-muted:         #888888;
+  --ink-faint:         #505050;
+  --card-bg:           #1C1C1C;
+  --card-border:       rgba(255,255,255,0.08);
+  --card-border-hover: rgba(255,255,255,0.18);
+  --card-border-focus: rgba(255,255,255,0.28);
+  --tag-bg:            rgba(255,255,255,0.07);
+  --tag-hover:         rgba(255,255,255,0.12);
+  --msg-bg:            rgba(255,255,255,0.08);
+  --input-bg:          rgba(255,255,255,0.04);
+  --btn-disabled-bg:   rgba(255,255,255,0.06);
+  --card-hover-bg:     rgba(255,255,255,0.03);
+  --border-active:     rgba(255,255,255,0.35);
+}
+
+/* ── Smooth theme switch ────── */
+.theme-transitioning,
+.theme-transitioning * {
+  transition:
+    background-color 0.25s ease,
+    border-color     0.25s ease,
+    color            0.25s ease !important;
+}
+
+/* ── Reset ─────────────────────────────────────────── */
+*  { box-sizing: border-box; margin: 0; padding: 0; }
+a  { color: inherit; text-decoration: none; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'SamsungSharpSans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ── Utility classes ───────────────────────────────── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+}
+
+/* ── Animation utility classes ─────────────────────── */
+.anim-left  { animation: slideFromLeft   0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.anim-right { animation: slideFromRight  0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.anim-up    { animation: slideFromBottom 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.anim-fade  { animation: fadeIn          0.55s ease both; }
+
+/* ── Keyframes ─────────────────────────────────────── */
+
+/* Status dot in About.jsx */
+@keyframes pulse {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.3; }
+}
+
+/* Page entry */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Modal / chat panel slide-up (shared fallback) */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Modal backdrop fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Slide from left */
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+/* Slide from right */
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+/* Slide from bottom */
+@keyframes slideFromBottom {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Focus-visible accessibility ───────────────────── */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
