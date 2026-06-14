@@ -131,7 +131,7 @@ function ProjectCard({ project, index }) {
                                 style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    minHeight: '36px',
+                                    minHeight: '28px',
                                     padding: '0.25rem 0.75rem',
                                     borderRadius: '100px',
                                     border: '1.5px solid var(--card-border-hover)',
@@ -164,7 +164,7 @@ function ProjectCard({ project, index }) {
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.3rem',
-                                minHeight: '36px',
+                                minHeight: '28px',
                                 padding: '0.25rem 0.75rem',
                                 borderRadius: '100px',
                                 border: '1.5px solid var(--card-border-hover)',

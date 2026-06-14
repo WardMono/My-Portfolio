@@ -42,13 +42,11 @@ function getAccentColor(project) {
 }
 
 // ── Framer Motion variants ────────────────────────────────────────────────────
-// Stagger container — children animate in sequence at 80ms apart
 const cardContainer = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.08 } },
 }
 
-// Individual card — slides up 20px while fading in
 const cardItem = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -56,9 +54,7 @@ const cardItem = {
         transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
     },
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
-// ProjectCard no longer owns gridColumn — that lives on the motion.div wrapper in ProjectsGrid
 function ProjectCard({ project, fullWidth, isMobile, isTablet }) {
     const navigate = useNavigate()
     const [hovered, setHovered] = useState(false)
@@ -78,7 +74,7 @@ function ProjectCard({ project, fullWidth, isMobile, isTablet }) {
                 transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
                 boxShadow: hovered ? '0 8px 28px rgba(0,0,0,0.07)' : 'none',
                 cursor: 'default',
-                height: '100%', // fill the motion.div wrapper so hover transforms stay consistent
+                height: '100%',
             }}
         >
             <div style={{
@@ -167,8 +163,6 @@ function ProjectCard({ project, fullWidth, isMobile, isTablet }) {
     )
 }
 
-// key prop on <ProjectsGrid> in the parent forces remount on filter/page change,
-// which resets motion to "hidden" and replays the stagger even when ready is already true.
 function ProjectsGrid({ projects, isMobile, isTablet, ready }) {
     const isOdd = projects.length % 2 !== 0
     const lastIndex = projects.length - 1
