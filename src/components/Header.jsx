@@ -11,6 +11,35 @@ const socials = [
     { href: 'mailto:Deleonalfredmiguel@gmail.com', label: 'Gmail', Icon: SiGmail, color: '#EA4335' },
 ]
 
+function curvedRound() {
+    const cx = 12
+    const cy = 12
+    const radius = 9.15
+    const wave = 0.38
+    const lobes = 16
+    const steps = 100
+    let d = ''
+    for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * Math.PI * 2
+        const rad = radius + wave * Math.sin(lobes * t)
+        const x = (cx + rad * Math.cos(t)).toFixed(2)
+        const y = (cy + rad * Math.sin(t)).toFixed(2)
+        d += `${i === 0 ? 'M' : 'L'}${x} ${y}`
+    }
+    return `${d}Z`
+}
+
+const CURVED_ROUND = curvedRound()
+
+function RoundBadge() {
+    return (
+        <svg className="profile-badge" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path d={CURVED_ROUND} fill="#1D9BF0" />
+            <path d="M7.1 12.35 10.25 15.55 16.9 8.55" fill="none" stroke="#fff" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
 const chips = [
     { label: 'React', Icon: SiReact, hex: '#61DAFB' },
     { label: 'Node.js', Icon: SiNodedotjs, hex: '#339933' },
@@ -27,10 +56,7 @@ function Header() {
                     <div className="flex h-full flex-col justify-center gap-2.5 sm:gap-3">
                         <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-3xl">
                             Alfred Miguel De Leon
-                            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="12" cy="12" r="12" fill="#1D9BF0" />
-                                <path d="M6.5 12.5L10 16L17.5 8.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                            </svg>
+                            <RoundBadge />
                         </h1>
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                             {socials.map(({ href, label, Icon, color }) => (
@@ -55,8 +81,8 @@ function Header() {
                 </div>
 
                 <div className="space-y-5 sm:space-y-6">
-                    <h2 className="max-w-full text-[1.7rem] font-normal leading-tight tracking-tight text-gray-900 dark:text-white sm:text-[2.05rem] md:text-[2.15rem]">
-                        Full-Stack Developer
+                    <h2 className="max-w-full text-[1.7rem] font-bold leading-tight tracking-tight text-gray-900 dark:text-white sm:text-[2.05rem] md:text-[2.15rem]">
+                        I <span className="text-[#1D9BF0]">Design</span>, Build &amp; Support.
                         <span className="profile-role">UI/UX &amp; Software Engineering</span>
                     </h2>
                     <p className="text-base font-light leading-7 text-gray-500 dark:text-gray-400 sm:text-lg sm:leading-8">

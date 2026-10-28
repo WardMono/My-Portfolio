@@ -11,10 +11,13 @@ function clamp(value, min, max) {
 
 function PixelAvatar({ src, altSrc, alt }) {
     const [time, setTime] = useState(0)
+    const [hint, setHint] = useState(false)
     const timeRef = useRef(0)
     const dirRef = useRef(0)
     const timerRef = useRef(0)
     const lastRef = useRef(0)
+    const hoverRef = useRef(false)
+    const hintTimer = useRef(0)
 
     const stop = () => {
         clearTimeout(timerRef.current)
@@ -22,7 +25,10 @@ function PixelAvatar({ src, altSrc, alt }) {
         lastRef.current = 0
     }
 
-    useEffect(() => () => stop(), [])
+    useEffect(() => () => {
+        stop()
+        clearTimeout(hintTimer.current)
+    }, [])
 
     const frame = () => {
         const now = performance.now()
@@ -60,21 +66,47 @@ function PixelAvatar({ src, altSrc, alt }) {
         }
     }
 
+    useEffect(() => {
+        const show = () => {
+            if (hoverRef.current) return
+            setHint(true)
+            clearTimeout(hintTimer.current)
+            hintTimer.current = setTimeout(() => setHint(false), 2400)
+        }
+        const id = setInterval(show, 6000)
+        return () => clearInterval(id)
+    }, [])
+
     const cells = Array.from({ length: GRID * GRID }, (_, i) => i)
     const size = 100 / GRID
 
     return (
         <div
             className="pixelated-image-card h-32 w-32 shrink-0 cursor-pointer rounded-full sm:h-40 sm:w-40"
-            onMouseEnter={() => play(true)}
-            onMouseLeave={() => play(false)}
-            onFocus={() => play(true)}
-            onBlur={() => play(false)}
+            onMouseEnter={() => {
+                hoverRef.current = true
+                setHint(false)
+                play(true)
+            }}
+            onMouseLeave={() => {
+                hoverRef.current = false
+                play(false)
+            }}
+            onFocus={() => {
+                hoverRef.current = true
+                setHint(false)
+                play(true)
+            }}
+            onBlur={() => {
+                hoverRef.current = false
+                play(false)
+            }}
             tabIndex={0}
         >
             <div className="pixelated-image-card__default">
                 <img src={src} alt={alt} className="h-full w-full object-cover" style={{ objectPosition: 'center' }} />
             </div>
+            <span className={`pixel-hint${hint ? ' is-on' : ''}`}>Hover to reveal</span>
             {time > 0 && (
                 <div className="pixelated-image-card__pixels" aria-hidden="true">
                     {cells.map((i) => {
