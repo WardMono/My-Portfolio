@@ -633,7 +633,7 @@ function Sidebar({ tocItems, scrollTo }) {
     )
 
     return (
-        <div style={{ position: 'sticky', top: '2rem', alignSelf: 'start' }}>
+        <div className="case-sidebar">
 
             {/* Project Overview */}
             <SidebarCard>

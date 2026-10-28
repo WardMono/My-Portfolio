@@ -1,138 +1,102 @@
-// src/App.jsx
 import { useState, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { flushSync } from 'react-dom'
+import { Routes, Route, NavLink, Link, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ThemeContext } from './context/ThemeContext'
 import Header from './components/Header'
-import About from './components/About'
 import Education from './components/Education'
 import Skills from './components/Skills'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
 import ChatBot from './components/ChatBot'
+import SiteFooter from './components/SiteFooter'
 import SkillsPage from './pages/SkillsPage'
 import ProjectsPage from './pages/ProjectsPage'
+import ExperiencePage from './pages/ExperiencePage'
 import FeelBrightCaseStudy from './pages/casestudies/FeelBrightCaseStudy'
 import ScrollToTop from './components/ScrollToTop'
-import LoadingScreen from './components/LoadingScreen'
 
-// ── Framer Motion scroll-reveal factory ─────────────────────────────────────
-// direction: 'left' | 'right' | 'up'
-// delay: ms (converted to seconds internally)
-const reveal = (direction = 'up', delay = 0) => ({
-  initial: {
-    opacity: 0,
-    x: direction === 'left' ? -32 : direction === 'right' ? 32 : 0,
-    y: direction === 'up' ? 24 : 0,
-  },
-  whileInView: { opacity: 1, x: 0, y: 0 },
-  transition: {
-    duration: 0.65,
-    ease: [0.22, 1, 0.36, 1],
-    delay: delay / 1000,
-  },
-  viewport: { once: true, amount: 0.15 },
-})
+const links = [
+  { to: '/projects', label: 'Projects' },
+  { to: '/experience', label: 'Experience' },
+  { to: '/skills', label: 'Skills' },
+]
 
-function Home({ animReady }) {
+function SiteNav({ theme, toggleTheme }) {
   return (
-    <main style={{
-      maxWidth: '1000px',
-      margin: '0 auto',
-      padding: '2rem 1.25rem 4rem',
-    }}>
-      <Header animReady={animReady} />
-
-      <style>{`
-        .bento-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          grid-template-areas: "about edu" "skills skills" "exp exp";
-          gap: 1rem;
-          margin-bottom: 1rem;
-          align-items: stretch;
-        }
-        @media (max-width: 767px) {
-          .bento-grid {
-            grid-template-columns: 1fr;
-            grid-template-areas: "about" "edu" "skills" "exp";
-          }
-        }
-      `}</style>
-
-      {animReady && (
-        <>
-          <div className="bento-grid">
-            <motion.div style={{ gridArea: 'about', display: 'flex', flexDirection: 'column' }} {...reveal('left')}>
-              <About />
-            </motion.div>
-            <motion.div style={{ gridArea: 'edu', display: 'flex', flexDirection: 'column' }} {...reveal('right')}>
-              <Education />
-            </motion.div>
-            <motion.div style={{ gridArea: 'skills', display: 'flex', flexDirection: 'column' }} {...reveal('up', 80)}>
-              <Skills />
-            </motion.div>
-            <motion.div style={{ gridArea: 'exp', display: 'flex', flexDirection: 'column' }} {...reveal('up', 160)}>
-              <Experience />
-            </motion.div>
+    <header className="site-bar">
+      <nav className="mx-auto flex w-full max-w-3xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
+        <Link to="/" className="text-sm font-bold" style={{ color: 'var(--ink)' }}>AMD</Link>
+        <div className="flex items-center gap-3 sm:gap-5">
+          <div className="flex items-center gap-3 sm:gap-4">
+            {links.map(link => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) => `nav-link whitespace-nowrap text-xs sm:text-sm ${isActive ? 'is-active' : ''}`}
+              >
+                {link.label}
+              </NavLink>
+            ))}
           </div>
+          <div className="nav-rule" />
+          <button
+            type="button"
+            role="switch"
+            aria-checked={theme === 'dark'}
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'}`}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'}`}
+            className={`theme-btn${theme === 'dark' ? ' is-on' : ''}`}
+          />
+        </div>
+      </nav>
+    </header>
+  )
+}
 
-          <motion.div {...reveal('up', 220)}><Projects /></motion.div>
-          <motion.div {...reveal('up', 280)}><Contact /></motion.div>
-          <motion.p
-            {...reveal('up', 340)}
-            style={{
-              textAlign: 'center',
-              marginTop: '3rem',
-              fontSize: '0.75rem',
-              color: 'var(--ink-faint)',
-              paddingBottom: '1rem',
-            }}
-          >
-            © 2026 Alfred Miguel De Leon · Pasay City, Philippines
-          </motion.p>
-        </>
-      )}
+function Home() {
+  return (
+    <main className="mx-auto flex w-full max-w-3xl flex-col gap-14 px-4 pb-10 sm:gap-16 sm:px-6 sm:pb-16">
+      <Header />
+      <Experience />
+      <Projects />
+      <Skills />
+      <Education />
+      <Contact />
+      <SiteFooter />
     </main>
   )
 }
 
 function AppRoutes({ theme, toggleTheme }) {
   const location = useLocation()
-  const [loading, setLoading] = useState(true)
-  const [isInitial, setIsInitial] = useState(true)
-  const [animReady, setAnimReady] = useState(false)
 
-  // Startup — scroll to top guaranteed after loading screen clears
   useEffect(() => {
-    const tLoad = setTimeout(() => {
-      setLoading(false)
-      setIsInitial(false)
-      window.scrollTo({ top: 0, behavior: 'instant' })
-    }, 2350)
-    const tAnim = setTimeout(() => setAnimReady(true), 2400)
-    return () => { clearTimeout(tLoad); clearTimeout(tAnim) }
-  }, [])
-
-  // Page transitions — snappier: 600ms instead of 1150ms
-  useEffect(() => {
-    if (isInitial) return
-    setLoading(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
-    const t = setTimeout(() => setLoading(false), 600)
-    return () => clearTimeout(t)
   }, [location.pathname])
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {loading && <LoadingScreen instant={!isInitial} />}
-      <Routes location={location}>
-        <Route path="/" element={<Home animReady={animReady} />} />
-        <Route path="/skills" element={<SkillsPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/casestudies/feelbright" element={<FeelBrightCaseStudy />} />
-      </Routes>
+      <SiteNav theme={theme} toggleTheme={toggleTheme} />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: 'easeInOut' }}
+        >
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/casestudies/feelbright" element={<FeelBrightCaseStudy />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
       <ChatBot />
       <ScrollToTop />
     </ThemeContext.Provider>
@@ -148,13 +112,57 @@ function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
+    document.documentElement.classList.toggle('dark', theme === 'dark')
     localStorage.setItem('portfolio-theme', theme)
   }, [theme])
 
-  const toggleTheme = () => {
-    document.documentElement.classList.add('theme-transitioning')
-    setTheme(t => t === 'dark' ? 'light' : 'dark')
-    setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 300)
+  const toggleTheme = (event) => {
+    const apply = () => {
+      let next = 'light'
+      flushSync(() => {
+        setTheme(t => {
+          next = t === 'dark' ? 'light' : 'dark'
+          return next
+        })
+      })
+      document.documentElement.setAttribute('data-theme', next)
+      document.documentElement.classList.toggle('dark', next === 'dark')
+    }
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      apply()
+      return
+    }
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2
+    const radius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    ) + 8
+    const oldColor = getComputedStyle(document.body).backgroundColor
+    const mask = `radial-gradient(circle at ${x}px ${y}px, transparent var(--theme-hole), #000 calc(var(--theme-hole) + 1px))`
+    const cover = document.createElement('div')
+    cover.setAttribute('aria-hidden', 'true')
+    cover.style.position = 'fixed'
+    cover.style.inset = '0'
+    cover.style.zIndex = '80'
+    cover.style.pointerEvents = 'none'
+    cover.style.background = oldColor
+    cover.style.setProperty('--theme-hole', '0px')
+    cover.style.maskImage = mask
+    cover.style.webkitMaskImage = mask
+    document.body.appendChild(cover)
+    apply()
+    const anim = cover.animate(
+      [{ '--theme-hole': '0px' }, { '--theme-hole': `${radius}px` }],
+      { duration: 900, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' }
+    )
+    const done = () => {
+      if (cover.isConnected) cover.remove()
+    }
+    anim.onfinish = done
+    setTimeout(done, 1100)
   }
 
   return <AppRoutes theme={theme} toggleTheme={toggleTheme} />

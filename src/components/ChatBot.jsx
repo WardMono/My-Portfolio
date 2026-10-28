@@ -11,28 +11,9 @@ const SESSION_ID = (() => {
     return id
 })()
 
-const BLOCKED_PATTERNS = [
-    /act as/i,
-    /pretend you are/i,
-    /you are now/i,
-    /ignore previous/i,
-    /as an expert/i,
-    /generate.*prompt/i,
-    /write.*code/i,
-    /create.*list/i,
-    /design.*prompt/i,
-    /stress.test/i,
-    /jailbreak/i,
-    /bypass/i,
-    /override/i,
-    /forget your instructions/i,
-    /new persona/i,
-    /roleplay as/i,
-]
-
 const INITIAL_MSG = {
     role: 'assistant',
-    content: "Hey there! 👋 I'm Alfred. Thanks for checking out my portfolio! Feel free to ask about my projects, the tools I use, or how the gym keeps me sane as a dev. How can I help you today?",
+    content: "Hello. I am Alfred Miguel De Leon. Thank you for viewing my portfolio. You may ask about my projects, the tools I use, or my work. How may I help you? : )",
     timestamp: Date.now(),
 }
 
@@ -154,17 +135,6 @@ export default function ChatBot() {
         const next = [...msgs, userMsg]
         setMsgs(next)
         setLoading(true)
-
-        const isBlocked = BLOCKED_PATTERNS.some(pattern => pattern.test(content))
-        if (isBlocked) {
-            setMsgs([...next, {
-                role: 'assistant',
-                content: "Haha nice try though 😄 — I'm just here to talk about my work, the projects I've built, the tools I use, and my journey as a dev. Anything you want to know about those?",
-                timestamp: Date.now(),
-            }])
-            setLoading(false)
-            return
-        }
 
         const history = next.slice(1).map(({ role, content }) => ({
             role: role === 'assistant' ? 'assistant' : 'user',
@@ -490,36 +460,18 @@ export default function ChatBot() {
             <button
                 onClick={() => setOpen(o => !o)}
                 aria-label="Toggle portfolio chat"
-                style={{
-                    position: 'fixed',
-                    bottom: '1.25rem', right: '1.25rem',
-                    width: 50, height: 50, borderRadius: '50%',
-                    background: 'var(--ink)',
-                    color: 'var(--bg)',
-                    border: 'none', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 4px 18px rgba(0,0,0,0.18)',
-                    zIndex: 1000,
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                }}
-                onMouseEnter={e => {
-                    e.currentTarget.style.transform = 'scale(1.08)'
-                    e.currentTarget.style.boxShadow = '0 6px 24px rgba(0,0,0,0.24)'
-                }}
-                onMouseLeave={e => {
-                    e.currentTarget.style.transform = 'scale(1)'
-                    e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.18)'
-                }}
+                className="stroke-btn fixed bottom-3 right-3 z-50 flex items-center gap-3 rounded-lg px-6 py-3.5 active:scale-95"
             >
                 {open ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <path d="M18 6L6 18M6 6l12 12" />
                     </svg>
                 ) : (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                 )}
+                {open ? 'Close' : 'Chat'}
                 {showBadge && !open && (
                     <span style={{
                         position: 'absolute', top: 1, right: 1,

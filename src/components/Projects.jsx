@@ -1,193 +1,90 @@
-// src/components/Projects.jsx
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { SiReact, SiNodedotjs, SiJavascript, SiTailwindcss, SiHtml5, SiPostgresql, SiLaravel, SiGodotengine } from 'react-icons/si'
+import { FaCss3Alt } from 'react-icons/fa'
 import { projectsData } from '../data/projects'
+import Reveal from './Reveal'
+import AccordionGallery from './AccordionGallery'
 
-const tagColors = {
-    'React': '#61DAFB',
-    'Node.js': '#339933',
-    'JavaScript': '#F7DF1E',
-    'Tailwind CSS': '#06B6D4',
-    'HTML': '#E34F26',
-    'CSS': '#1572B6',
-    'PostgreSQL': '#336791',
-    'Express.js': '#000000',
-    'Laravel': '#FF2D20',
-    'Godot 4.3': '#478CBF',
-    'GDScript': '#478CBF',
-    'Vercel': '#000000',
+const tagIcons = {
+    React: { Icon: SiReact, color: '#61DAFB' },
+    'Node.js': { Icon: SiNodedotjs, color: '#339933' },
+    JavaScript: { Icon: SiJavascript, color: '#F7DF1E' },
+    'Tailwind CSS': { Icon: SiTailwindcss, color: '#06B6D4' },
+    HTML: { Icon: SiHtml5, color: '#E34F26' },
+    CSS: { Icon: FaCss3Alt, color: '#1572B6' },
+    PostgreSQL: { Icon: SiPostgresql, color: '#336791' },
+    Laravel: { Icon: SiLaravel, color: '#FF2D20' },
+    'Godot 4.3': { Icon: SiGodotengine, color: '#478CBF' },
 }
 
-function getAccentColor(project) {
-    for (const tag of project.tags) {
-        if (tagColors[tag]) return tagColors[tag]
+function Arrow({ className = 'h-3.5 w-3.5' }) {
+    return (
+        <svg className={`${className} transition-transform group-hover:translate-x-1`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+    )
+}
+
+export function ProjectCard({ project }) {
+    const moveLight = (event) => {
+        const rect = event.currentTarget.getBoundingClientRect()
+        event.currentTarget.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`)
+        event.currentTarget.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`)
     }
-    return '#888888'
-}
-
-function ProjectCard({ project, index }) {
-    const navigate = useNavigate()
-    const [hovered, setHovered] = useState(false)
-    const accentColor = getAccentColor(project)
+    const icons = project.tags.map(tag => tagIcons[tag]).filter(Boolean).slice(0, 6)
 
     return (
         <div
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            className="anim-up"
-            style={{
-                animationDelay: `${index * 80}ms`,
-                background: hovered ? 'var(--card-hover-bg)' : 'var(--card-bg)',
-                border: `1px solid ${hovered ? 'var(--card-border-hover)' : 'var(--card-border)'}`,
-                borderRadius: 'var(--radius)',
-                overflow: 'hidden',
-                transition: 'transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease',
-                display: 'flex',
-                flexDirection: 'column',
-                transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-                boxShadow: hovered ? '0 8px 28px rgba(0,0,0,0.07)' : 'none',
-            }}
+            onMouseMove={moveLight}
+            className="card-spotlight project-card flex h-full w-full flex-col gap-2 rounded-xl p-2"
         >
-            {/* Image */}
-            <div style={{
-                width: '100%',
-                height: '200px',
-                overflow: 'hidden',
-                padding: '0.75rem',
-                boxSizing: 'border-box',
-            }}>
-                {project.image ? (
-                    <img
-                        src={project.image}
-                        alt={project.name}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            borderRadius: '8px',
-                            display: 'block',
-                        }}
-                    />
+            {project.image ? (
+                project.link ? (
+                    <a href={project.link} target="_blank" rel="noreferrer" className="group/image block overflow-hidden rounded-lg">
+                        <img src={project.image} alt="" className="h-40 w-full object-cover transition-transform duration-500 ease-out group-hover/image:scale-105" />
+                    </a>
                 ) : (
-                    <div style={{
-                        width: '100%',
-                        height: '100%',
-                        background: `linear-gradient(135deg, ${accentColor}22 0%, ${accentColor}44 100%)`,
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-                        <span style={{
-                            fontSize: '2.2rem',
-                            fontWeight: 800,
-                            color: accentColor,
-                            opacity: 0.4,
-                            letterSpacing: '-1px',
-                            userSelect: 'none',
-                        }}>
-                            {project.name.slice(0, 2).toUpperCase()}
-                        </span>
+                    <Link to={project.caseStudy || '/projects'} className="group/image block overflow-hidden rounded-lg">
+                        <img src={project.image} alt="" className="h-40 w-full object-cover transition-transform duration-500 ease-out group-hover/image:scale-105" />
+                    </Link>
+                )
+            ) : (
+                <div className="flex h-40 items-center justify-center rounded-lg text-sm tracking-[0.14em] text-gray-500">
+                    {project.name.slice(0, 2).toUpperCase()}
+                </div>
+            )}
+            <div className="mt-3 flex flex-1 flex-col px-2">
+                <div className="flex min-h-0 flex-1 flex-col">
+                    <p className="text-lg font-semibold leading-none tracking-tight text-gray-900 dark:text-white">{project.name}</p>
+                    <p className="mt-1 text-xs font-semibold text-gray-700 dark:text-gray-300">{project.tagline}</p>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{project.desc}</p>
+                </div>
+                {icons.length > 0 && (
+                    <div className="mt-auto pt-3">
+                        <div className="flex items-center gap-3">
+                            {icons.map(({ Icon, color }) => (
+                                <span key={color + Icon.name} className="project-logo" style={{ '--sig': color }}>
+                                    <Icon size={18} color={color} aria-hidden="true" />
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
-
-            {/* Content */}
-            <div style={{
-                padding: '1.4rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.6rem',
-                flex: 1,
-            }}>
-                <div>
-                    <p style={{
-                        fontSize: '1rem',
-                        fontWeight: 700,
-                        color: 'var(--ink)',
-                        marginBottom: '0.15rem',
-                        lineHeight: 1.3,
-                    }}>
-                        {project.name}
-                    </p>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--ink-muted)', fontWeight: 500 }}>
-                        {project.tagline}
-                    </p>
-                </div>
-
-                <p style={{ fontSize: '0.8rem', color: 'var(--ink-muted)', lineHeight: 1.65, flex: 1 }}>
-                    {project.desc}
-                </p>
-
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                    {project.link && (() => {
-                        const domain = new URL(project.link).hostname.replace(/^www\./, '')
-                        return (
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noreferrer"
-                                style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    minHeight: '28px',
-                                    padding: '0.25rem 0.75rem',
-                                    borderRadius: '100px',
-                                    border: '1.5px solid var(--card-border-hover)',
-                                    fontSize: '0.72rem',
-                                    fontWeight: 600,
-                                    color: 'var(--ink-muted)',
-                                    textDecoration: 'none',
-                                    background: 'transparent',
-                                    transition: 'background 0.18s, border-color 0.18s',
-                                    letterSpacing: '0.01em',
-                                }}
-                                onMouseEnter={e => {
-                                    e.currentTarget.style.background = 'var(--btn-disabled-bg)'
-                                    e.currentTarget.style.borderColor = 'var(--border-active)'
-                                }}
-                                onMouseLeave={e => {
-                                    e.currentTarget.style.background = 'transparent'
-                                    e.currentTarget.style.borderColor = 'var(--card-border-hover)'
-                                }}
-                            >
-                                {domain}
-                            </a>
-                        )
-                    })()}
-
+            <div className="mt-auto">
+                <div className="project-card-rule mb-1 mt-1.5 border-t border-dotted" />
+                <div className="flex min-h-[34px] items-center justify-end gap-3 px-2 pb-1">
                     {project.caseStudy && (
-                        <button
-                            onClick={() => navigate(project.caseStudy)}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.3rem',
-                                minHeight: '28px',
-                                padding: '0.25rem 0.75rem',
-                                borderRadius: '100px',
-                                border: '1.5px solid var(--card-border-hover)',
-                                fontSize: '0.72rem',
-                                fontWeight: 600,
-                                color: 'var(--ink-muted)',
-                                background: 'transparent',
-                                cursor: 'pointer',
-                                fontFamily: 'inherit',
-                                transition: 'background 0.18s, border-color 0.18s',
-                                letterSpacing: '0.01em',
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.background = 'var(--btn-disabled-bg)'
-                                e.currentTarget.style.borderColor = 'var(--border-active)'
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.background = 'transparent'
-                                e.currentTarget.style.borderColor = 'var(--card-border-hover)'
-                            }}
-                        >
-                            View Case Study
-                        </button>
+                        <Link to={project.caseStudy} className="group inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-widest text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                            <span>Read case study</span>
+                            <Arrow className="h-3 w-3" />
+                        </Link>
+                    )}
+                    {project.link && (
+                        <a href={project.link} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-widest text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                            <span>Visit site</span>
+                            <Arrow className="h-3 w-3" />
+                        </a>
                     )}
                 </div>
             </div>
@@ -195,87 +92,34 @@ function ProjectCard({ project, index }) {
     )
 }
 
-function ProjectsGrid({ projects }) {
+function Projects() {
+    const featured = projectsData.filter(project => project.image).slice(0, 3)
+    const gallery = featured.map(project => ({
+        id: project.id,
+        image: project.image,
+        alt: project.name,
+        category: project.tagline,
+        title: project.name,
+        subtitle: project.tags.slice(0, 3).join(' · '),
+        cta: project.caseStudy ? 'Read case study' : 'Visit site',
+        href: project.caseStudy || project.link,
+        collapsedLabel: project.name.split(' ')[0],
+        collapsedCategory: project.category?.[0] || 'Project',
+    }))
+
     return (
         <>
-            <style>{`
-                .projects-grid {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    gap: 1rem;
-                }
-                @media (min-width: 640px) {
-                    .projects-grid {
-                        grid-template-columns: repeat(2, 1fr);
-                    }
-                }
-            `}</style>
-            <div className="projects-grid">
-                {projects.map((project, i) => (
-                    <ProjectCard key={project.id} project={project} index={i} />
-                ))}
-            </div>
+            <Reveal className="w-full space-y-5">
+                <div className="flex items-center justify-between">
+                    <p className="text-2xl font-light tracking-tight text-gray-900 dark:text-white sm:text-3xl">Featured Work</p>
+                    <Link to="/projects" className="group inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-white">
+                        <span>View All</span>
+                        <Arrow />
+                    </Link>
+                </div>
+                <AccordionGallery items={gallery} />
+            </Reveal>
         </>
-    )
-}
-
-function Projects() {
-    const navigate = useNavigate()
-    const visibleProjects = projectsData.slice(0, 4)
-
-    return (
-        <div style={{
-            background: 'var(--card-bg)',
-            border: '1px solid var(--card-border)',
-            borderRadius: 'var(--radius)',
-            padding: '1.5rem',
-            marginBottom: '1rem',
-        }}>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '1rem',
-            }}>
-                <p style={{
-                    fontSize: '1.2rem',
-                    fontWeight: 700,
-                    color: 'var(--ink)',
-                    lineHeight: 1.3,
-                }}>
-                    Projects
-                </p>
-                <button
-                    onClick={() => navigate('/projects')}
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontSize: '0.7rem',
-                        fontWeight: 600,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        color: 'var(--ink-faint)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.3rem',
-                        padding: '0.5rem 0',
-                        minHeight: '44px',
-                        transition: 'color 0.15s',
-                        fontFamily: 'inherit',
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.color = 'var(--ink)'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-faint)'}
-                >
-                    View All
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </button>
-            </div>
-
-            <ProjectsGrid projects={visibleProjects} />
-        </div>
     )
 }
 

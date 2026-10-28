@@ -1,44 +1,34 @@
 // src/data/skills.jsx
 export const fullStack = [
     {
-        category: 'Languages',
-        icon: '{ }',
-        items: ['HTML', 'CSS', 'JavaScript', 'PHP', 'Java', 'XML'],
-    },
-    {
         category: 'Frontend',
         icon: '◈',
-        items: ['React', 'Tailwind CSS', 'Bootstrap', 'jQuery', 'Responsive Design', 'Wireframing'],
+        items: ['HTML', 'CSS', 'JavaScript', 'React', 'Tailwind CSS', 'Bootstrap', 'jQuery', 'Responsive Design', 'Wireframing'],
     },
     {
         category: 'Backend',
         icon: '⚙',
-        items: ['Node.js', 'Express.js', 'Laravel', 'REST APIs'],
+        items: ['PHP', 'Java', 'XML', 'Node.js', 'Express.js', 'Laravel', 'REST APIs', 'MySQL', 'PostgreSQL'],
     },
     {
-        category: 'Database',
-        icon: '⬡',
-        items: ['MySQL', 'PostgreSQL'],
-    },
-    {
-        category: 'Version Control & Deploy',
+        category: 'DevOps & Cloud',
         icon: '⎇',
         items: ['Git', 'GitHub', 'GitLab', 'Vercel'],
     },
     {
-        category: 'Design & Multimedia',
-        icon: '◻',
-        items: ['Figma', 'Adobe XD', 'Canva', 'CapCut', 'DaVinci Resolve'],
-    },
-    {
-        category: 'AI & Intelligent Systems',
+        category: 'AI & Machine Learning',
         icon: '◎',
-        items: ['Prompt Engineering', 'AI API Integration'],
+        items: ['Prompt Engineering', 'AI API Integration', 'LlamaIndex', 'Anthropic', 'Claude Code', 'Cursor', 'Codex'],
     },
     {
-        category: 'Game Development',
+        category: 'CMS & No-Code',
+        icon: '◻',
+        items: ['Canva', 'CapCut', 'Webflow'],
+    },
+    {
+        category: 'Developer Tools',
         icon: '▷',
-        items: ['Godot', 'GDScript', '2D Game Development'],
+        items: ['Figma', 'Adobe XD', 'DaVinci Resolve', 'Godot', 'GDScript', '2D Game Development', 'Discord', 'Teams', 'VS Code', 'Jira', 'Trello'],
     },
 ]
 

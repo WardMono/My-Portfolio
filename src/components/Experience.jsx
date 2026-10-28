@@ -1,97 +1,78 @@
-// src/components/Experience.jsx
-import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import Reveal from './Reveal'
 
-const experienceData = [
+export const experienceData = [
+    {
+        role: 'Customer Service Representative',
+        company: 'TeleTech',
+        location: 'Pasay City, MOA · On-site · Full-time',
+        date: 'Jul 2026 – Present',
+        points: [
+            'Managed inbound and outbound customer calls, resolving each inquiry from initial contact through to a documented outcome.',
+            'Maintained accurate customer records in the CRM throughout each interaction, ensuring account information remained complete and current.',
+            'Met daily performance standards by balancing resolution quality with established productivity targets.',
+            'Coordinated the live conversation and the customer record simultaneously, addressing the issue without requiring the customer to restate it.',
+            'Prepared clear case documentation so subsequent updates could proceed from a complete and reliable record.',
+        ],
+    },
     {
         role: 'Technical Support Specialist Intern',
         company: 'New Simulator Center of the Philippines Inc.',
-        location: 'Makati City',
-        date: 'November 2025 – February 2026',
-        current: true,
+        location: 'Makati City · On-site · Internship',
+        date: 'Nov 2025 – Feb 2026',
+        points: [
+            'Diagnosed and resolved hardware and software issues through telephone, email, and in-person support.',
+            'Managed support tickets from initial logging through resolution, maintaining accurate documentation for team reference.',
+            'Executed assigned technical tasks in accordance with established procedures, delivering timely and properly documented support.',
+        ],
     },
 ]
 
-function Experience() {
-    const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
-
-    useEffect(() => {
-        const handler = () => setIsMobile(window.innerWidth < 640)
-        window.addEventListener('resize', handler)
-        return () => window.removeEventListener('resize', handler)
-    }, [])
-
+function Arrow() {
     return (
-        <div style={{
-            background: 'var(--card-bg)',
-            border: '1px solid var(--card-border)',
-            borderRadius: 'var(--radius)',
-            padding: '1.5rem',
-            height: '100%',
-            boxSizing: 'border-box',
-        }}>
-            <p style={{
-                fontSize: '1.2rem',
-                fontWeight: 700,
-                color: 'var(--ink)',
-                marginBottom: '0.2rem',
-                lineHeight: 1.3,
-            }}>Experience</p>
+        <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+    )
+}
 
+export function ExperienceList({ detailed = false }) {
+    return (
+        <div className="exp-map">
             {experienceData.map((exp, index) => (
-                <div key={index} style={{
-                    display: 'flex',
-                    gap: '1rem',
-                    padding: '0.9rem 0',
-                    borderBottom: index < experienceData.length - 1 ? '1px solid var(--card-border)' : 'none',
-                }}>
-                    {/* Dot */}
-                    <div style={{ paddingTop: '5px' }}>
-                        <div style={{
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: exp.current ? 'var(--ink)' : 'var(--ink-faint)',
-                            boxShadow: exp.current ? '0 0 0 1.5px var(--ink)' : '0 0 0 1.5px var(--ink-faint)',
-                            flexShrink: 0,
-                        }} />
+                <article key={`${exp.company}-${exp.date}`} className={`exp-stop${index === 0 ? ' is-current' : ''}`}>
+                    <p className="exp-date">{exp.date}</p>
+                    <div className="exp-rail" aria-hidden="true" />
+                    <div className="exp-body">
+                        <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white sm:text-[17px]">{exp.role}</h3>
+                        <p className="mt-1 text-sm font-medium text-gray-700 dark:text-gray-300">{exp.company}</p>
+                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.location}</p>
+                        {detailed && (
+                            <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                                {exp.points.map(point => (
+                                    <li key={point}>{point}</li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
-
-                    {/* Info */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                        {/* Role + Date: side-by-side on desktop, stacked on mobile */}
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: isMobile ? 'column' : 'row',
-                            justifyContent: 'space-between',
-                            alignItems: isMobile ? 'flex-start' : 'flex-start',
-                            gap: isMobile ? '0.15rem' : '1rem',
-                            marginBottom: '0.15rem',
-                        }}>
-                            <p style={{
-                                fontSize: '0.9rem',
-                                fontWeight: 700,
-                                color: 'var(--ink)',
-                                lineHeight: 1.4,
-                                minWidth: 0,
-                            }}>{exp.role}</p>
-                            <span style={{
-                                fontSize: '0.75rem',
-                                color: 'var(--ink-faint)',
-                                whiteSpace: 'nowrap',
-                                flexShrink: 0,
-                                paddingTop: isMobile ? '0' : '2px',
-                            }}>{exp.date}</span>
-                        </div>
-
-                        <p style={{
-                            fontSize: '0.80rem',
-                            color: 'var(--ink-muted)',
-                            marginBottom: '0.5rem',
-                        }}>{exp.company} · {exp.location}</p>
-                    </div>
-                </div>
+                </article>
             ))}
         </div>
+    )
+}
+
+function Experience() {
+    return (
+        <Reveal id="experience" className="w-full space-y-6">
+            <div className="flex items-center justify-between">
+                <p className="text-2xl font-light tracking-tight text-gray-900 dark:text-white sm:text-3xl">Experience</p>
+                <Link to="/experience" className="group inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-white">
+                    <span>View Details</span>
+                    <Arrow />
+                </Link>
+            </div>
+            <ExperienceList />
+        </Reveal>
     )
 }
 

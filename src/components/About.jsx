@@ -30,10 +30,8 @@ function About() {
                         lineHeight: 1.75,
                         fontFamily: 'var(--font-body, inherit)',
                     }}>
-                        I'm a BS Information Technology student at Arellano University, passionate about building clean,
-                        functional web experiences. With a background spanning frontend, backend, and UI/UX design, I approach
-                        every project with both technical precision and an eye for good design. I believe the best digital
-                        products are ones that feel effortless to use.
+                        I'm a full-stack developer who builds websites, applications, and backend systems.
+                        I work across the interface and the server, and I care about products that feel clear to use.
                     </p>
                 </div>
             </div>
