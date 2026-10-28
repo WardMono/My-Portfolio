@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
+import ttecLogo from '../assets/ttec.svg'
+import newsimLogo from '../assets/newsim.png'
 
 function tenure(start, end) {
     const from = new Date(start)
@@ -20,6 +22,8 @@ export const experienceData = [
     {
         role: 'Customer Service Representative',
         company: 'TeleTech',
+        logo: ttecLogo,
+        logoInk: true,
         type: 'Full-time',
         place: 'Pasay City, MOA',
         mode: 'On-site',
@@ -38,6 +42,7 @@ export const experienceData = [
     {
         role: 'Technical Support Specialist Intern',
         company: 'New Simulator Center of the Philippines Inc.',
+        logo: newsimLogo,
         type: 'Internship',
         place: 'Makati City',
         mode: 'On-site',
@@ -67,14 +72,29 @@ export function ExperienceList({ detailed = false }) {
             {experienceData.map((exp, index) => {
                 const length = tenure(exp.start, exp.end)
                 return (
-                <article key={`${exp.company}-${exp.start}`} className={`exp-stop${index === 0 ? ' is-current' : ''}`}>
+                <article key={`${exp.company}-${exp.start}`} className={`exp-stop${index === 0 ? ' is-current' : ''}${detailed ? ' has-logo' : ''}`}>
+                    {detailed && (
+                        <span className="exp-logo">
+                            <img src={exp.logo} alt="" className={exp.logoInk ? 'is-ink' : ''} />
+                        </span>
+                    )}
                     <div className="exp-rail" aria-hidden="true" />
                     <div className="exp-body">
-                        <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white sm:text-[17px]">{exp.company}</h3>
-                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{exp.type} · {length}</p>
-                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.place} · {exp.mode}</p>
-                        <p className="mt-3 text-sm font-medium text-gray-800 dark:text-gray-200">{exp.role}</p>
-                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.startLabel} – {exp.endLabel} · {length}</p>
+                        {detailed ? (
+                            <>
+                                <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white sm:text-[17px]">{exp.company}</h3>
+                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{exp.type} · {length}</p>
+                                <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.place} · {exp.mode}</p>
+                                <p className="mt-3 text-sm font-medium text-gray-800 dark:text-gray-200">{exp.role}</p>
+                                <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.startLabel} – {exp.endLabel} · {length}</p>
+                            </>
+                        ) : (
+                            <>
+                                <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white sm:text-[17px]">{exp.role}</h3>
+                                <p className="mt-1 text-sm font-medium text-gray-800 dark:text-gray-200">{exp.company}</p>
+                                <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.place} · {exp.mode} · {exp.type}</p>
+                            </>
+                        )}
                         {detailed && (
                             <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
                                 {exp.points.map(point => (

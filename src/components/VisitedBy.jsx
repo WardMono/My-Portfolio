@@ -120,11 +120,10 @@ function sessionId() {
 function VisitedBy() {
     const location = useLocation()
     const [views, setViews] = useState(null)
-    const [live, setLive] = useState(null)
 
     useEffect(() => {
         let stop = false
-        const ping = async () => {
+        const record = async () => {
             try {
                 const res = await fetch('/api/views', {
                     method: 'POST',
@@ -135,17 +134,14 @@ function VisitedBy() {
                 const data = await res.json()
                 if (stop) return
                 setViews(data.views)
-                setLive(data.live)
             } catch {
                 // The count stays quiet if the view endpoint is unavailable.
             }
         }
 
-        ping()
-        const timer = setInterval(ping, 12000)
+        record()
         return () => {
             stop = true
-            clearInterval(timer)
         }
     }, [location.pathname])
 
@@ -155,7 +151,6 @@ function VisitedBy() {
                 <span className="visited-by-label">Visited by</span>
                 <p className="visited-stats">
                     <span><strong>{views === null ? '—' : views.toLocaleString()}</strong> views</span>
-                    <span className="visited-live"><i />{live === null ? '—' : live} viewing</span>
                 </p>
             </div>
             <div className="visited-by-row">
