@@ -100,7 +100,6 @@ function Projects() {
         alt: project.name,
         category: project.tagline,
         title: project.name,
-        subtitle: project.tags.slice(0, 3).join(' · '),
         cta: project.caseStudy ? 'Read case study' : 'Visit site',
         href: project.caseStudy || project.link,
         collapsedLabel: project.name.split(' ')[0],

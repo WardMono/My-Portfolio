@@ -219,7 +219,7 @@ textarea:focus-visible {
   cursor: pointer;
   transition: flex-grow 1.05s cubic-bezier(0.45, 0, 0.2, 1);
 }
-.accordion-gallery.has-open .ag-panel { flex-grow: 1; }
+.accordion-gallery.has-open .ag-panel { flex-grow: 0.78; }
 .accordion-gallery.has-open .ag-panel.is-open { flex-grow: 1.9; }
 .ag-panel__frame { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
 .ag-panel__media {
@@ -255,6 +255,7 @@ textarea:focus-visible {
   position: absolute;
   z-index: 2;
   color: #fff;
+  font-weight: 700;
   text-shadow: 0 2px 14px rgba(0,0,0,0.45);
   transition: opacity 1.05s cubic-bezier(0.45, 0, 0.2, 1), transform 1.05s cubic-bezier(0.45, 0, 0.2, 1);
 }
@@ -278,8 +279,8 @@ textarea:focus-visible {
   font-weight: 700;
 }
 .ag-panel__category { display: block; margin-bottom: 8px; }
-.ag-panel__title { display: block; font-size: clamp(1.35rem, 4vw, 1.85rem); font-weight: 300; letter-spacing: -0.025em; line-height: 1.05; font-family: inherit; text-transform: none; letter-spacing: -0.03em; }
-.ag-panel__subtitle { display: block; margin-top: 8px; font-size: 0.9rem; font-weight: 400; text-transform: none; letter-spacing: 0; font-family: inherit; }
+.ag-panel__title { display: block; font-size: clamp(1.35rem, 4vw, 1.85rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; font-family: inherit; text-transform: none; letter-spacing: -0.03em; }
+.ag-panel__subtitle { display: block; margin-top: 8px; font-size: 0.9rem; font-weight: 700; text-transform: none; letter-spacing: 0; font-family: inherit; }
 .ag-panel__cta {
   display: inline-flex;
   align-items: center;

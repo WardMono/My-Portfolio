@@ -40,7 +40,7 @@ function AccordionGallery({ items }) {
                         <span className="ag-panel__collapsed" aria-hidden={open}>
                             {item.collapsedLabel}
                             <br />
-                            <span className="font-normal tracking-[0.12em] opacity-75">{item.collapsedCategory}</span>
+                            <span className="tracking-[0.12em]">{item.collapsedCategory}</span>
                         </span>
                         <span className="ag-panel__content" aria-hidden={!open}>
                             <span className="ag-panel__category">{item.category}</span>
