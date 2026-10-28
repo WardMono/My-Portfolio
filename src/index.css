@@ -570,18 +570,12 @@ html[data-theme="dark"] .profile-resume:hover {
   padding-bottom: 2.4rem;
 }
 .exp-stop:last-child { padding-bottom: 0; }
-.exp-date {
-  grid-column: 2;
-  margin-bottom: 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--ink-faint);
-}
 .exp-rail {
   position: relative;
-  grid-row: 1 / span 2;
+  grid-row: 1;
   grid-column: 1;
 }
+.exp-body { grid-column: 2; }
 .exp-rail::before {
   content: "";
   position: absolute;
@@ -608,17 +602,7 @@ html[data-theme="dark"] .profile-resume:hover {
 }
 .exp-stop.is-current .exp-rail::after { background: var(--ink); }
 @media (min-width: 640px) {
-  .exp-stop {
-    grid-template-columns: 132px 16px minmax(0, 1fr);
-    column-gap: 1.15rem;
-  }
-  .exp-date {
-    grid-column: 1;
-    grid-row: 1;
-    margin: 0.15rem 0 0;
-  }
-  .exp-rail { grid-column: 2; grid-row: 1; }
-  .exp-body { grid-column: 3; }
+  .exp-stop { column-gap: 1.15rem; }
 }
 .site-footer {
   display: grid;

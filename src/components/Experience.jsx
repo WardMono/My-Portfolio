@@ -1,12 +1,32 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 
+function tenure(start, end) {
+    const from = new Date(start)
+    const to = end ? new Date(end) : new Date()
+    let months = (to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth())
+    if (end) months += 1
+    else if (to.getDate() < from.getDate()) months -= 1
+    months = Math.max(months, 1)
+    const years = Math.floor(months / 12)
+    const mos = months % 12
+    const parts = []
+    if (years) parts.push(years === 1 ? '1 yr' : `${years} yrs`)
+    if (mos) parts.push(mos === 1 ? '1 mo' : `${mos} mos`)
+    return parts.join(' ')
+}
+
 export const experienceData = [
     {
         role: 'Customer Service Representative',
         company: 'TeleTech',
-        location: 'Pasay City, MOA · On-site · Full-time',
-        date: 'Jul 2026 – Present',
+        type: 'Full-time',
+        place: 'Pasay City, MOA',
+        mode: 'On-site',
+        startLabel: 'Jul 2026',
+        endLabel: 'Present',
+        start: '2026-07-17',
+        end: null,
         points: [
             'Managed inbound and outbound customer calls, resolving each inquiry from initial contact through to a documented outcome.',
             'Maintained accurate customer records in the CRM throughout each interaction, ensuring account information remained complete and current.',
@@ -18,8 +38,13 @@ export const experienceData = [
     {
         role: 'Technical Support Specialist Intern',
         company: 'New Simulator Center of the Philippines Inc.',
-        location: 'Makati City · On-site · Internship',
-        date: 'Nov 2025 – Feb 2026',
+        type: 'Internship',
+        place: 'Makati City',
+        mode: 'On-site',
+        startLabel: 'Nov 2025',
+        endLabel: 'Feb 2026',
+        start: '2025-11-01',
+        end: '2026-02-28',
         points: [
             'Diagnosed and resolved hardware and software issues through telephone, email, and in-person support.',
             'Managed support tickets from initial logging through resolution, maintaining accurate documentation for team reference.',
@@ -39,14 +64,17 @@ function Arrow() {
 export function ExperienceList({ detailed = false }) {
     return (
         <div className="exp-map">
-            {experienceData.map((exp, index) => (
-                <article key={`${exp.company}-${exp.date}`} className={`exp-stop${index === 0 ? ' is-current' : ''}`}>
-                    <p className="exp-date">{exp.date}</p>
+            {experienceData.map((exp, index) => {
+                const length = tenure(exp.start, exp.end)
+                return (
+                <article key={`${exp.company}-${exp.start}`} className={`exp-stop${index === 0 ? ' is-current' : ''}`}>
                     <div className="exp-rail" aria-hidden="true" />
                     <div className="exp-body">
-                        <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white sm:text-[17px]">{exp.role}</h3>
-                        <p className="mt-1 text-sm font-medium text-gray-700 dark:text-gray-300">{exp.company}</p>
-                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.location}</p>
+                        <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white sm:text-[17px]">{exp.company}</h3>
+                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{exp.type} · {length}</p>
+                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.place} · {exp.mode}</p>
+                        <p className="mt-3 text-sm font-medium text-gray-800 dark:text-gray-200">{exp.role}</p>
+                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{exp.startLabel} – {exp.endLabel} · {length}</p>
                         {detailed && (
                             <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
                                 {exp.points.map(point => (
@@ -56,7 +84,8 @@ export function ExperienceList({ detailed = false }) {
                         )}
                     </div>
                 </article>
-            ))}
+                )
+            })}
         </div>
     )
 }
